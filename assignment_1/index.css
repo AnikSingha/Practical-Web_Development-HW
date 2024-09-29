@@ -43,6 +43,26 @@ nav a:hover {
     border-radius: 175px;
 }
 
+@media (max-width: 768px) {
+    .image-container img {
+        max-width: 70%;
+        height: 300px;
+    }
+}
+
+@media (max-width: 480px) {
+    .image-container img {
+        max-width: 90%;
+        height: 200px;
+    }
+}
+
+@media (min-height: 1000px) {
+    .image-container img {
+        max-width: 60%;
+        height: 500px;
+    }
+}
 .button-container {
     display: flex;
     justify-content: center;
