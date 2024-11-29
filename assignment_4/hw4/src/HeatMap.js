@@ -1,4 +1,5 @@
 import { useState } from "react";
+import './HeatMap.css'; // Import the regular CSS file
 
 export const Heatmap = ({ data }) => {
   const [selectedDay, setSelectedDay] = useState(null);
@@ -83,10 +84,12 @@ export const Heatmap = ({ data }) => {
         song: topSong.song,
         totalSongs: details.count,
       });
-
+  
       const rect = event.target.getBoundingClientRect();
+      const offsetTop = window.scrollY || document.documentElement.scrollTop;
+  
       setTooltipPosition({
-        top: rect.top,
+        top: rect.top + offsetTop + 10,
         left: rect.right + 10,
       });
     } else {
@@ -129,16 +132,9 @@ export const Heatmap = ({ data }) => {
 
   return (
     <div>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: "20px",
-          justifyItems: "center",
-        }}
-      >
+      <div className="heatmap-container">
         {months.map((month) => (
-          <div key={month} style={{ width: "250px" }}>
+          <div key={month} className="month">
             <h2 style={{ textAlign: "center" }}>
               {new Date(2024, month).toLocaleString("default", { month: "long" })}
             </h2>
@@ -177,9 +173,8 @@ export const Heatmap = ({ data }) => {
                       onClick={() => handleDayClick(day)}
                       onMouseOver={(event) => handleMouseOver(day, event)}
                       onMouseLeave={handleMouseLeave}
+                      className="day-cell"
                       style={{
-                        width: "30px",
-                        height: "30px",
                         backgroundColor: getColor(count),
                         border: "1px solid #ddd",
                         cursor: "pointer",
@@ -194,23 +189,11 @@ export const Heatmap = ({ data }) => {
       </div>
 
       {tooltip && (
-        <div
-          style={{
-            position: "absolute",
-            top: tooltipPosition.top + "px",
-            left: tooltipPosition.left + "px",
-            padding: "10px",
-            backgroundColor: "rgba(0, 0, 0, 0.7)",
-            color: "white",
-            borderRadius: "8px",
-            maxWidth: "300px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          <h3 style={{ margin: "0 0 10px 0" }}>Song Information</h3>
-          <p style={{ margin: "5px 0" }}>
+        <div className="tooltip" style={{
+          top: tooltipPosition.top + "px",
+          left: tooltipPosition.left + "px",
+        }}>
+          <p>
             <strong>Date:</strong> {new Date(tooltip.date).toLocaleDateString('en-US', { 
               weekday: 'long', 
               year: 'numeric', 
@@ -218,11 +201,11 @@ export const Heatmap = ({ data }) => {
               day: 'numeric' 
             })}
           </p>
-          <p style={{ margin: "5px 0" }}>
+          <p>
             <strong>Top Song:</strong> {tooltip.song || "No data"}
           </p>
-          <p style={{ margin: "5px 0" }}>
-            <strong>Total Songs:</strong> {tooltip.totalSongs || 0}
+          <p>
+            <strong>Total Songs:</strong> {tooltip.totalSongs}
           </p>
         </div>
       )}

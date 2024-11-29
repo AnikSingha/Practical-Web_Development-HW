@@ -20,12 +20,10 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div style={{paddingBottom: '100px'}}>
       <div style={{display: "flex", justifyContent: "center", width: "100%"}}>
         <Heatmap data={listeningData} />
       </div>
-      <br/>
-      <br/>
     </div>
   );
 }
